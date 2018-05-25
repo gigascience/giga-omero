@@ -1,0 +1,3 @@
+[submodule "omero-install"]
+	path = omero-install
+	url = https://github.com/ome/omero-install.git
