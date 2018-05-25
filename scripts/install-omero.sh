@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
-sudo yum install -y git
+# Install tools
+sudo yum install -y git rdiff-backup
 
 cd /vagrant
 git clone https://github.com/ome/omero-install.git
