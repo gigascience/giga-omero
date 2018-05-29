@@ -1,6 +1,9 @@
 # giga-omero
 backup
 images
+vagrant.log
+omero-data.tar.gz
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
