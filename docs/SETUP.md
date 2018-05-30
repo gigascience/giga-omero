@@ -20,7 +20,9 @@ $ git submodule init
 $ git submodule update
 ```
 
-Finally, boot up the VM and execute the OMERO installation steps:
+Finally, boot up the VM using Vagrant 
+[2.0.1](https://releases.hashicorp.com/vagrant/2.0.1/) which will also execute 
+the OMERO installation steps:
 ```bash
 $ vagrant up
 ```
@@ -28,3 +30,9 @@ $ vagrant up
 The OMERO server should now deployed on the Centos VM with the website available
 at [http://localhost:9170](http://localhost:9170) from a web browser. To log 
 into the OMERO system from the web client, use `root` and `omero_root_password`.
+
+# Import images
+```bash
+/home/omero/OMERO.server/bin/omero import 007.tiff -d 51
+```
+`-d, DATASET_ID`
