@@ -42,12 +42,12 @@ Vagrant.configure(2) do |config|
       aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
       aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-      # aws.ami = "ami-1bfa2b78" # selinux disabled
-      aws.ami = "ami-b85e86db" # selinux on
+      aws.ami = "ami-1bfa2b78" # selinux disabled
+      # aws.ami = "ami-b85e86db" # selinux on
       aws.region = ENV['AWS_DEFAULT_REGION']
-      aws.instance_type = "t2.micro"
+      aws.instance_type = "t2.small"
       aws.tags = {
-        'Name' => 'gigaomero-website',
+        'Name' => 'gigaOMERO',
         'Deployment' => 'test',
       }
       aws.security_groups = ENV['AWS_SECURITY_GROUPS']
