@@ -26,7 +26,8 @@ Vagrant.configure(2) do |config|
     gigaomero.vm.network "forwarded_port", guest: 4080, host: 9171
     gigaomero.vm.network "forwarded_port", guest: 5432, host: 9172
     # Set up directories
-    gigaomero.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+#     gigaomero.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+    gigaomero.vm.synced_folder ".", "/vagrant"
 
     ####################
     #### VirtualBox ####
@@ -42,28 +43,33 @@ Vagrant.configure(2) do |config|
       aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
       aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-      aws.ami = "ami-1bfa2b78" # selinux disabled
+      # aws.ami = "ami-1bfa2b78" # selinux disabled
       # aws.ami = "ami-b85e86db" # selinux on
+      aws.ami = "ami-d2fa88ae" # Official Centos 7 AMI
       aws.region = ENV['AWS_DEFAULT_REGION']
-      aws.instance_type = "t2.small"
+      aws.instance_type = "t2.medium"
       aws.tags = {
-        'Name' => 'gigaOMERO',
+        'Name' => 'GigaOMERO',
         'Deployment' => 'test',
       }
       aws.security_groups = ENV['AWS_SECURITY_GROUPS']
 
       override.ssh.username = "centos"
       override.ssh.private_key_path = ENV['AWS_SSH_PRIVATE_KEY_PATH']
+      # Fix for error: No host IP was given to the Vagrant core NFS helper
+      override.nfs.functional = false
     end
 
     if ENV['GIGAOMERO_BOX'] != 'aws'
       gigaomero.vm.provision "shell", inline: "sudo hostnamectl set-hostname localhost"
-      gigaomero.vm.provision "shell", path: "scripts/download-omero-data.sh"
-      gigaomero.vm.provision "shell", path: "scripts/install-omero.sh"
-      gigaomero.vm.provision "shell", path: "scripts/stop-omero.sh"
-      gigaomero.vm.provision "shell", path: "scripts/restore-db.sh"
-      gigaomero.vm.provision "shell", path: "scripts/restore-data.sh"
-      gigaomero.vm.provision "shell", path: "scripts/start-omero.sh"
     end
+
+    gigaomero.vm.provision "shell", inline: "setenforce 0"
+    gigaomero.vm.provision "shell", path: "scripts/download-omero-data.sh"
+    gigaomero.vm.provision "shell", path: "scripts/install-omero.sh"
+    gigaomero.vm.provision "shell", path: "scripts/stop-omero.sh"
+    gigaomero.vm.provision "shell", path: "scripts/restore-db.sh"
+    gigaomero.vm.provision "shell", path: "scripts/restore-data.sh"
+    gigaomero.vm.provision "shell", path: "scripts/start-omero.sh"
   end
 end
