@@ -64,9 +64,13 @@ Vagrant.configure(2) do |config|
       gigaomero.vm.provision "shell", inline: "sudo hostnamectl set-hostname localhost"
     end
 
-    gigaomero.vm.provision "shell", inline: "setenforce 0"
+    gigaomero.vm.provision "shell", path: "scripts/install_deps.sh"
     gigaomero.vm.provision "shell", path: "scripts/download-omero-data.sh"
     gigaomero.vm.provision "shell", path: "scripts/install-omero.sh"
+    if ENV['GIGAOMERO_BOX'] = 'aws'
+      gigaomero.vm.provision "shell", inline: "setenforce 0"
+      gigaomero.vm.provision "shell", path: "scripts/fix_nginx_conf_aws.sh"
+    end
     gigaomero.vm.provision "shell", path: "scripts/stop-omero.sh"
     gigaomero.vm.provision "shell", path: "scripts/restore-db.sh"
     gigaomero.vm.provision "shell", path: "scripts/restore-data.sh"
