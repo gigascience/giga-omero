@@ -26,7 +26,6 @@ Vagrant.configure(2) do |config|
     gigaomero.vm.network "forwarded_port", guest: 4080, host: 9171
     gigaomero.vm.network "forwarded_port", guest: 5432, host: 9172
     # Set up directories
-#     gigaomero.vm.synced_folder ".", "/vagrant", type: "virtualbox"
     gigaomero.vm.synced_folder ".", "/vagrant"
 
     ####################
@@ -43,8 +42,6 @@ Vagrant.configure(2) do |config|
       aws.access_key_id = ENV['AWS_ACCESS_KEY_ID']
       aws.secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
       aws.keypair_name = ENV['AWS_KEYPAIR_NAME']
-      # aws.ami = "ami-1bfa2b78" # selinux disabled
-      # aws.ami = "ami-b85e86db" # selinux on
       aws.ami = "ami-d2fa88ae" # Official Centos 7 AMI
       aws.region = ENV['AWS_DEFAULT_REGION']
       aws.instance_type = "t2.medium"
@@ -53,6 +50,7 @@ Vagrant.configure(2) do |config|
         'Deployment' => 'test',
       }
       aws.security_groups = ENV['AWS_SECURITY_GROUPS']
+      aws.synced_folder_type = "rsync"
 
       override.ssh.username = "centos"
       override.ssh.private_key_path = ENV['AWS_SSH_PRIVATE_KEY_PATH']
